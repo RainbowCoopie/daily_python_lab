@@ -12,10 +12,23 @@
 
 ## 每天做什么（按优先级挑一个）
 
+### 第 0 步：先去网上找灵感（几乎每天都要做）
+不要凭空想，也不要看"50 个 Python 项目"这种榜单——那类选题全是玩具。
+要去看**具体的、有点怪的真实东西**：
+
+- Hacker News 的 Show HN / Ask HN（别人做的小工具、抱怨的痛点）
+- Wikipedia:Unusual articles —— 怪词条里常藏着数据结构或解析难题
+- PyPI 最近更新 / GitHub trending 里的小库，看它的 README 解决了什么
+- 厂商文档里的坑（Excel 的 XFD、Unicode 宽度、时区、编码），这些坑每个人都踩过
+- Stack Overflow 高票的怪问题、Reddit r/Python 的吐槽
+
+判断标准：**这个东西我自己会不会用三次以上？** 会，才值得写。
+选定后在模块 docstring 里写清"灵感来源 + 为什么值得单独做一层"。
+
 ### A. 新主题（默认）
 技术栈相关的新工程，写成一个主题模块，之后可复用。
 
-1. 上网找思路（可选，找真实痛点而不是玩具）
+1. 按第 0 步找灵感（可以联网，找真实痛点而不是玩具）
 2. 在 `lab/topics/<slug>.py` 新建模块，导出：
    `SLUG / TITLE / TAGS / PKG / SUMMARY / STACK_NOTES / NOTES / FILES`
    `FILES` 里必须含**可运行的实现 + pytest 用例**，只用标准库
