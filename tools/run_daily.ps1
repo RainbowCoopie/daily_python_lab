@@ -1,8 +1,9 @@
-# 定时任务入口: 跑一次完整流水线, 日志落到 logs/
-# 默认不调用任何本地模型（不占显卡）；需要时手动加 -WithLLM
+# 兜底任务入口: 只在"今天还没有成功运行"时补一个模板项目
+# 默认不调用任何本地模型（不占显卡）；-Force 可忽略幂等守卫
 param(
     [switch]$NoPush,
-    [switch]$WithLLM
+    [switch]$WithLLM,
+    [switch]$Force
 )
 
 $ErrorActionPreference = 'Continue'
@@ -17,6 +18,7 @@ $log = Join-Path $logDir "run_$stamp.log"
 
 $env:PYTHONIOENCODING = 'utf-8'
 $cliArgs = @('-m', 'lab', 'run')
+if (-not $Force) { $cliArgs += '--if-idle' }
 if ($NoPush) { $cliArgs += '--no-push' }
 if ($WithLLM) { $cliArgs += '--llm' }
 

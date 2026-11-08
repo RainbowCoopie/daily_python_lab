@@ -1,11 +1,17 @@
-"""命令行入口: python -m lab <command>"""
+"""命令行入口: python -m lab <command>
+
+run      从主题库生成一个项目 -> 闸门 -> 提交推送
+publish  把工作区当前所有改动(新增/维护/重构)过闸门后提交推送
+dry      只生成 + 校验, 不提交
+status   看运行记录
+index    重建 INDEX.md
+"""
 from __future__ import annotations
 
 import argparse
 import sys
 import traceback
 from datetime import date
-from pathlib import Path
 
 from . import catalog, codegen, publish, scaffold, state as statemod, validate
 from .config import ROOT, load_config, read_token
@@ -21,6 +27,35 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
+def _gate_all(token: str | None) -> list[tuple[str, str]]:
+    """对所有已生成项目跑一遍闸门, 返回失败清单。"""
+    py = python_exe()
+    failures: list[tuple[str, str]] = []
+    for project in scaffold.list_projects():
+        try:
+            validate.gate(project, py, token)
+        except validate.ValidationError as exc:
+            failures.append((project.name, str(exc)[:400]))
+    return failures
+
+
+def _publish(cfg: dict, token: str, message: str, paths) -> int:
+    try:
+        publish.ensure_repo(cfg, token)
+        sha = publish.commit_paths(cfg, token, ROOT, message, paths)
+        if not sha:
+            log("      没有变更可提交")
+            return 0
+        statemod.record_commit(sha, message)
+        log(f"      commit {sha}")
+        publish.push(cfg, token, ROOT)
+        log(f"      已推送 -> https://github.com/{cfg['owner']}/{cfg['repo']}")
+        return 0
+    except publish.PublishError as exc:
+        log(f"      发布失败: {exc}")
+        return 1
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     cfg = load_config()
     token = read_token()
@@ -32,6 +67,10 @@ def cmd_run(args: argparse.Namespace) -> int:
         return 2
 
     st = statemod.load_state()
+    if getattr(args, "if_idle", False) and statemod.ran_today(st, today):
+        log(f"今天({today})已有成功运行, --if-idle 跳过")
+        return 0
+
     specs = catalog.load_specs()
     spec = catalog.by_slug(args.slug) if args.slug else statemod.pick_topic(specs, st, today)
 
@@ -57,8 +96,7 @@ def cmd_run(args: argparse.Namespace) -> int:
             st, slug=spec.SLUG, project=project.name, status="failed", note=str(exc)[:500], today=today
         )
         return 1
-    last_line = summary.splitlines()[-1] if summary else "ok"
-    log(f"      {last_line}")
+    log(f"      {summary.splitlines()[-1] if summary else 'ok'}")
 
     log("[4/6] 重建索引")
     index = scaffold.rebuild_index(today)
@@ -83,6 +121,7 @@ def cmd_run(args: argparse.Namespace) -> int:
             f"- 验收: compileall + pytest 全绿\n"
             f"- {note or '纯模板生成'}"
         )
+        paths = None
     else:
         message = (
             f"day {today.isoformat()}: {spec.TITLE}\n\n"
@@ -91,27 +130,41 @@ def cmd_run(args: argparse.Namespace) -> int:
             f"- 验收: compileall + pytest 全绿\n"
             f"- {note or '纯模板生成'}"
         )
-    try:
-        publish.ensure_repo(cfg, token)
-        # 首次提交把流水线自身也带上; 之后每天只提交当天项目与索引
-        stage = None if bootstrap else [project, index]
-        sha = publish.commit_paths(cfg, token, ROOT, message, stage)
-        if not sha:
-            log("      没有变更可提交")
-            return 0
-        st["runs"][-1]["commit"] = sha
-        st["runs"][-1]["pushed"] = True
-        statemod.save_state(st)
-        sha = publish.amend_paths(cfg, token, ROOT, [statemod.STATE_FILE], sha)
-        log(f"      commit {sha}")
-        publish.push(cfg, token, ROOT)
-        log(f"      已推送 -> https://github.com/{cfg['owner']}/{cfg['repo']}")
-    except publish.PublishError as exc:
-        log(f"      发布失败: {exc}")
-        return 1
+        paths = [project, index, statemod.STATE_FILE]
 
-    log("[6/6] 完成")
-    return 0
+    code = _publish(cfg, token, message, paths)
+    if code == 0:
+        log("[6/6] 完成")
+    return code
+
+
+def cmd_publish(args: argparse.Namespace) -> int:
+    """维护 / 修复 / 重构后的通用发布口: 全仓库过闸门, 再提交当前所有改动。"""
+    cfg = load_config()
+    token = read_token()
+    if not token and not args.no_push:
+        log("缺少 GITHUB_TOKEN")
+        return 2
+
+    log("[1/3] 闸门: 扫描所有项目")
+    failures = _gate_all(token)
+    if failures:
+        for name, err in failures:
+            log(f"      失败 {name}:\n{err}")
+        log("      有项目未通过, 中止发布")
+        return 1
+    log(f"      {len(scaffold.list_projects())} 个项目全部通过")
+
+    log("[2/3] 重建索引")
+    index = scaffold.rebuild_index()
+    log(f"      {index.relative_to(ROOT)}")
+
+    if args.no_push:
+        log("[3/3] --no-push: 不提交")
+        return 0
+
+    log("[3/3] 提交")
+    return _publish(cfg, token, args.message, None)
 
 
 def cmd_dry(args: argparse.Namespace) -> int:
@@ -122,18 +175,34 @@ def cmd_dry(args: argparse.Namespace) -> int:
 def cmd_status(args: argparse.Namespace) -> int:
     st = statemod.load_state()
     runs = st.get("runs", [])
+    commits = statemod.load_local().get("commits", [])
     if not runs:
         log("还没有运行记录")
         return 0
     log(f"共 {len(runs)} 次运行, 最近 {min(args.n, len(runs))} 条:\n")
     for r in runs[-args.n :]:
         flag = "OK  " if r["status"] == "ok" else "FAIL"
-        log(
-            f"{flag} {r['date']}  {r['slug']:<22} {r.get('project',''):<34}"
-            f" {r.get('commit') or '-':<9} {'pushed' if r.get('pushed') else ''}"
-        )
+        log(f"{flag} {r['date']}  {r['slug']:<22} {r.get('project','')}")
         if r.get("note"):
             log(f"       {r['note'][:120]}")
+    if commits:
+        log(f"\n最近提交: {commits[-1]['sha']}  {commits[-1]['message']}")
+    return 0
+
+
+def cmd_topics(args: argparse.Namespace) -> int:
+    """看主题库使用情况, 决定今天写新的还是维护旧的。"""
+    st = statemod.load_state()
+    specs = catalog.load_specs()
+    seen = {}
+    for r in st.get("runs", []):
+        if r.get("status") == "ok":
+            seen[r["slug"]] = max(seen.get(r["slug"], ""), r["date"])
+    log(f"主题库共 {len(specs)} 个, 已生成 {len(seen)} 个\n")
+    for s in sorted(specs, key=lambda x: (seen.get(x.SLUG, ""), x.SLUG)):
+        used = seen.get(s.SLUG)
+        log(f"{'  ' if used else 'NEW'} {s.SLUG:<22} {s.TITLE:<24} {used or '未写过'}")
+    log("\n未写过 = 可直接用 run --slug; 全部写过 = 该写新主题或维护旧项目了")
     return 0
 
 
@@ -148,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     for name, fn, helptext in (
-        ("run", cmd_run, "完整跑一遍: 生成 + 校验 + 提交推送"),
+        ("run", cmd_run, "从主题库生成一个项目: 生成 + 校验 + 提交推送"),
         ("dry", cmd_dry, "只生成 + 校验, 不提交"),
     ):
         p = sub.add_parser(name, help=helptext)
@@ -161,11 +230,20 @@ def main(argv: list[str] | None = None) -> int:
         )
         if name == "run":
             p.add_argument("--no-push", action="store_true", help="只提交到本地, 不推送")
+            p.add_argument("--if-idle", action="store_true", help="今天已有成功运行则直接跳过")
         p.set_defaults(func=fn)
+
+    p = sub.add_parser("publish", help="维护/修复后发布: 全项目过闸门 + 提交所有改动")
+    p.add_argument("-m", "--message", required=True, help="commit message")
+    p.add_argument("--no-push", action="store_true")
+    p.set_defaults(func=cmd_publish)
 
     p = sub.add_parser("status", help="查看运行记录")
     p.add_argument("-n", type=int, default=15)
     p.set_defaults(func=cmd_status)
+
+    p = sub.add_parser("topics", help="查看主题库使用情况")
+    p.set_defaults(func=cmd_topics)
 
     p = sub.add_parser("index", help="重建 INDEX.md")
     p.set_defaults(func=cmd_index)

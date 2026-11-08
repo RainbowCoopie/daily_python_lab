@@ -6,3 +6,4 @@ __pycache__/
 logs/
 .env
 config.local.json
+state/local.json
