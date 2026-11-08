@@ -11,6 +11,7 @@ from .topics import (
     queue_pool,
     rpa_taskflow,
     sd_prompt,
+    sheetref,
     watch_value,
     yolo_labels,
 )
@@ -27,6 +28,7 @@ ALL_MODULES = [
     sd_prompt,
     queue_pool,
     watch_value,
+    sheetref,
 ]
 
 

@@ -5,9 +5,10 @@
 | 日期 | 项目 | 技术点 |
 |---|---|---|
 | 2026-11-08 | [取值监控与变更告警](./projects/2026-11-08__watch_value) | 监控预警 · 快照比对 · RPA 场景 · stdlib |
+| 2026-11-08 | [Excel 地址与列名解析器](./projects/2026-11-08__sheetref) | Excel · RPA 场景 · 双射进制 · A1 引用 |
 | 2026-11-08 | [ComfyUI 工作流图校验器](./projects/2026-11-08__comfy_graph) | ComfyUI · DAG · 拓扑排序 · 环检测 |
 | 2026-11-08 | [任意进制双向转换器](./projects/2026-11-08__algo_base_convert) | CPython · 算法 · stdlib · 边界值 |
 
 ---
 
-共 3 个项目。最近更新: 2026-11-08
+共 4 个项目。最近更新: 2026-11-08

@@ -130,7 +130,8 @@ def cmd_run(args: argparse.Namespace) -> int:
             f"- 验收: compileall + pytest 全绿\n"
             f"- {note or '纯模板生成'}"
         )
-        paths = [project, index, statemod.STATE_FILE]
+        # 当天项目 + 索引 + 流水线源码(新主题模块就在 lab/ 里) + 运行日志
+        paths = [project, index, statemod.STATE_FILE, ROOT / "lab"]
 
     code = _publish(cfg, token, message, paths)
     if code == 0:
