@@ -1,0 +1,14 @@
+{
+  "owner": "RainbowCoopie",
+  "repo": "daily_python_lab",
+  "branch": "main",
+  "repo_description": "Daily Python engineering drills — FastAPI / crawler / RPA / LLM / CV tooling, generated and test-verified every day.",
+  "author_name": "RainbowCoopie",
+  "author_email": "18080862606@163.com",
+  "ollama_base": "http://127.0.0.1:11434",
+  "ollama_model": "deepseek-14b",
+  "llm_enabled": false,
+  "llm_timeout_seconds": 180,
+  "llm_max_attempts": 2,
+  "project_dir_pattern": "{date}__{slug}"
+}
