@@ -51,6 +51,38 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-08T18:18:41"
+    },
+    {
+      "date": "2026-11-09",
+      "slug": "widegrid",
+      "project": "2026-11-09__widegrid",
+      "status": "failed",
+      "note": "pytest 失败:\n..F.F..................F..                                               [100%]\n================================== FAILURES ===================================\n_______________ test_every_line_has_same_display_width_with_cjk _______________\n\n    def test_every_line_has_same_display_width_with_cjk() -> None:\n        out = render(\n            [[\"中文\", \"x\"], [\"a\", \"两个字\"]],\n            headers=[\"名称\", \"值\"],\n        )\n>       assert len(widths_of(out)) == 1\nE       AssertionError: assert 3 ==",
+      "finished_at": "2026-11-09T09:30:55"
+    },
+    {
+      "date": "2026-11-09",
+      "slug": "widegrid",
+      "project": "2026-11-09__widegrid",
+      "status": "failed",
+      "note": "pytest 失败:\n...FF.....................                                               [100%]\n================================== FAILURES ===================================\n______________________ test_right_alignment_for_numbers _______________________\n\n    def test_right_alignment_for_numbers() -> None:\n        out = render([[\"1\", \"10\"], [\"100\", \"2\"]], aligns=[\"right\", \"right\"])\n        lines = out.splitlines()\n        assert lines[0] == \"  1 | 10\"\n>       assert lines[1] == \"100 | 2 \"\nE       As",
+      "finished_at": "2026-11-09T09:31:12"
+    },
+    {
+      "date": "2026-11-09",
+      "slug": "widegrid",
+      "project": "2026-11-09__widegrid",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-09T09:31:24"
+    },
+    {
+      "date": "2026-11-09",
+      "slug": "widegrid",
+      "project": "2026-11-09__widegrid",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-09T09:31:29"
     }
   ]
 }

@@ -13,6 +13,7 @@ from .topics import (
     sd_prompt,
     sheetref,
     watch_value,
+    widegrid,
     yolo_labels,
 )
 
@@ -29,6 +30,7 @@ ALL_MODULES = [
     queue_pool,
     watch_value,
     sheetref,
+    widegrid,
 ]
 
 
