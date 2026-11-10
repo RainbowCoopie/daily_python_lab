@@ -7,6 +7,7 @@ from .topics import (
     crawler_kit,
     fastapi_kv,
     llm_client_min,
+    mojibake,
     pandas_etl,
     queue_pool,
     rpa_taskflow,
@@ -31,6 +32,7 @@ ALL_MODULES = [
     watch_value,
     sheetref,
     widegrid,
+    mojibake,
 ]
 
 

@@ -83,6 +83,22 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-09T09:31:29"
+    },
+    {
+      "date": "2026-11-10",
+      "slug": "mojibake",
+      "project": "2026-11-10__mojibake",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-10T09:31:44"
+    },
+    {
+      "date": "2026-11-10",
+      "slug": "mojibake",
+      "project": "2026-11-10__mojibake",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-10T09:31:49"
     }
   ]
 }
