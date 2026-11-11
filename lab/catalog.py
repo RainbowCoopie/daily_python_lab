@@ -6,6 +6,7 @@ from .topics import (
     comfy_graph,
     crawler_kit,
     fastapi_kv,
+    isoweek,
     llm_client_min,
     mojibake,
     pandas_etl,
@@ -33,6 +34,7 @@ ALL_MODULES = [
     sheetref,
     widegrid,
     mojibake,
+    isoweek,
 ]
 
 

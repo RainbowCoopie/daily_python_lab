@@ -99,6 +99,22 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-10T09:31:49"
+    },
+    {
+      "date": "2026-11-11",
+      "slug": "isoweek",
+      "project": "2026-11-11__isoweek",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-11T12:11:19"
+    },
+    {
+      "date": "2026-11-11",
+      "slug": "isoweek",
+      "project": "2026-11-11__isoweek",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-11T12:11:31"
     }
   ]
 }
