@@ -17,6 +17,7 @@ from .topics import (
     watch_value,
     widegrid,
     yolo_labels,
+    xlsafe,
 )
 
 ALL_MODULES = [
@@ -33,6 +34,7 @@ ALL_MODULES = [
     watch_value,
     sheetref,
     widegrid,
+    xlsafe,
     mojibake,
     isoweek,
 ]

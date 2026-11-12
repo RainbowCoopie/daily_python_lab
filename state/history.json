@@ -115,6 +115,30 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-11T12:11:31"
+    },
+    {
+      "date": "2026-11-12",
+      "slug": "xlsafe",
+      "project": "2026-11-12__xlsafe",
+      "status": "failed",
+      "note": "pytest 失败:\n..........................F...........F.......                           [100%]\n================================== FAILURES ===================================\n___________________ test_inspect_collects_reasons_in_order ____________________\n\n    def test_inspect_collects_reasons_in_order() -> None:\n>       assert inspect(\"=1234567890123456\") == [\"formula\", \"long_number\"]\nE       AssertionError: assert ['formula'] == ['formula', 'long_number']\nE         \nE         Right contains one mor",
+      "finished_at": "2026-11-12T09:31:21"
+    },
+    {
+      "date": "2026-11-12",
+      "slug": "xlsafe",
+      "project": "2026-11-12__xlsafe",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-12T09:31:38"
+    },
+    {
+      "date": "2026-11-12",
+      "slug": "xlsafe",
+      "project": "2026-11-12__xlsafe",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-12T09:31:47"
     }
   ]
 }
