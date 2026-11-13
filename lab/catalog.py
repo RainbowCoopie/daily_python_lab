@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from .topics import (
     algo_base_convert,
+    cnnum,
     comfy_graph,
     crawler_kit,
     fastapi_kv,
@@ -37,6 +38,7 @@ ALL_MODULES = [
     xlsafe,
     mojibake,
     isoweek,
+    cnnum,
 ]
 
 

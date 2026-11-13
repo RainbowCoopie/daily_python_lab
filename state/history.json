@@ -139,6 +139,30 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-12T09:31:47"
+    },
+    {
+      "date": "2026-11-13",
+      "slug": "cnnum",
+      "project": "2026-11-13__cnnum",
+      "status": "failed",
+      "note": "pytest 失败:\n...............................F.......................................  [100%]\n================================== FAILURES ===================================\n________________________ test_roundtrip[1000000000001] ________________________\n\nvalue = 1000000000001\n\n    @pytest.mark.parametrize(\"value\", [0, 1, 10, 11, 99, 100, 1001, 10010, 99999, 123456789, 10 ** 8 + 7, 10 ** 12 + 1])\n    def test_roundtrip(value: int) -> None:\n>       assert parse_chinese(to_chinese(value)) == value\nE  ",
+      "finished_at": "2026-11-13T09:31:19"
+    },
+    {
+      "date": "2026-11-13",
+      "slug": "cnnum",
+      "project": "2026-11-13__cnnum",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-13T09:31:30"
+    },
+    {
+      "date": "2026-11-13",
+      "slug": "cnnum",
+      "project": "2026-11-13__cnnum",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-13T09:31:35"
     }
   ]
 }
