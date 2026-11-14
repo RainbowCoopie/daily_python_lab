@@ -46,16 +46,21 @@ def write_csv(
 
 
 def read_csv(path: str | Path, *, unprotect_cells: bool = True) -> list[dict[str, str]]:
-    """读 CSV; 强制剥离表头里的 BOM, 并可选地把保护过的值还原。"""
-    raw = Path(path).read_bytes()
-    text = raw.decode("utf-8-sig" if has_bom(raw) else "utf-8")
-    reader = csv.DictReader(text.splitlines())
+    """读 CSV; 剥离表头里的 BOM, 并可选地把保护过的值还原。
+
+    必须把文件对象直接交给 csv 模块, 不能用 splitlines() 先切行:
+    引号字段里的换行是数据的一部分, 提前切行会把它吃掉。
+    """
+    source = Path(path)
+    raw = source.read_bytes()
+    encoding = "utf-8-sig" if has_bom(raw) else "utf-8"
     rows: list[dict[str, str]] = []
-    for row in reader:
-        cleaned = {
-            strip_bom(str(key)): (unprotect(str(value)) if unprotect_cells else str(value))
-            for key, value in row.items()
-            if key is not None
-        }
-        rows.append(cleaned)
+    with open(source, newline="", encoding=encoding) as fh:
+        for row in csv.DictReader(fh):
+            cleaned = {
+                strip_bom(str(key)): (unprotect(str(value)) if unprotect_cells else str(value))
+                for key, value in row.items()
+                if key is not None
+            }
+            rows.append(cleaned)
     return rows

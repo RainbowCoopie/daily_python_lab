@@ -202,18 +202,23 @@ def write_csv(
 
 
 def read_csv(path: str | Path, *, unprotect_cells: bool = True) -> list[dict[str, str]]:
-    """读 CSV; 强制剥离表头里的 BOM, 并可选地把保护过的值还原。"""
-    raw = Path(path).read_bytes()
-    text = raw.decode("utf-8-sig" if has_bom(raw) else "utf-8")
-    reader = csv.DictReader(text.splitlines())
+    """读 CSV; 剥离表头里的 BOM, 并可选地把保护过的值还原。
+
+    必须把文件对象直接交给 csv 模块, 不能用 splitlines() 先切行:
+    引号字段里的换行是数据的一部分, 提前切行会把它吃掉。
+    """
+    source = Path(path)
+    raw = source.read_bytes()
+    encoding = "utf-8-sig" if has_bom(raw) else "utf-8"
     rows: list[dict[str, str]] = []
-    for row in reader:
-        cleaned = {
-            strip_bom(str(key)): (unprotect(str(value)) if unprotect_cells else str(value))
-            for key, value in row.items()
-            if key is not None
-        }
-        rows.append(cleaned)
+    with open(source, newline="", encoding=encoding) as fh:
+        for row in csv.DictReader(fh):
+            cleaned = {
+                strip_bom(str(key)): (unprotect(str(value)) if unprotect_cells else str(value))
+                for key, value in row.items()
+                if key is not None
+            }
+            rows.append(cleaned)
     return rows
 ''',
     "tests/test_cells.py": '''import pytest
@@ -419,6 +424,22 @@ def test_quote_mode(tmp_path: Path) -> None:
     body = path.read_text(encoding="utf-8")
     assert "'007" in body
     assert read_csv(path)[0]["工号"] == "007"
+
+
+def test_read_csv_keeps_newline_inside_quoted_field(tmp_path: Path) -> None:
+    """引号字段里的换行是数据, 不能被当成行分隔符切掉。"""
+    path = tmp_path / "multi.csv"
+    path.write_text('姓名,备注\n张三,"第一行\n第二行"\n', encoding="utf-8")
+    value = read_csv(path)[0]["备注"]
+    assert value.replace("\r\n", "\n") == "第一行\n第二行"
+
+
+def test_roundtrip_with_multiline_and_punctuation(tmp_path: Path) -> None:
+    rows = [{"姓名": "张三", "备注": '第一行\n第二行, 带逗号 "引号"'}]
+    path = tmp_path / "out.csv"
+    write_csv(path, rows, ["姓名", "备注"])
+    back = read_csv(path)
+    assert back[0]["备注"].replace("\r\n", "\n") == '第一行\n第二行, 带逗号 "引号"'
 ''',
 }
 

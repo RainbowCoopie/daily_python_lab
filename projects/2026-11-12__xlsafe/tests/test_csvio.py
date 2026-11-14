@@ -95,3 +95,19 @@ def test_quote_mode(tmp_path: Path) -> None:
     body = path.read_text(encoding="utf-8")
     assert "'007" in body
     assert read_csv(path)[0]["工号"] == "007"
+
+
+def test_read_csv_keeps_newline_inside_quoted_field(tmp_path: Path) -> None:
+    """引号字段里的换行是数据, 不能被当成行分隔符切掉。"""
+    path = tmp_path / "multi.csv"
+    path.write_text('姓名,备注\n张三,"第一行\n第二行"\n', encoding="utf-8")
+    value = read_csv(path)[0]["备注"]
+    assert value.replace("\r\n", "\n") == "第一行\n第二行"
+
+
+def test_roundtrip_with_multiline_and_punctuation(tmp_path: Path) -> None:
+    rows = [{"姓名": "张三", "备注": '第一行\n第二行, 带逗号 "引号"'}]
+    path = tmp_path / "out.csv"
+    write_csv(path, rows, ["姓名", "备注"])
+    back = read_csv(path)
+    assert back[0]["备注"].replace("\r\n", "\n") == '第一行\n第二行, 带逗号 "引号"'
