@@ -19,6 +19,7 @@ from .topics import (
     widegrid,
     yolo_labels,
     xlsafe,
+    simdup,
 )
 
 ALL_MODULES = [
@@ -39,6 +40,7 @@ ALL_MODULES = [
     mojibake,
     isoweek,
     cnnum,
+    simdup,
 ]
 
 
