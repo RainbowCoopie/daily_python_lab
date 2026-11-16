@@ -187,6 +187,30 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-15T09:31:33"
+    },
+    {
+      "date": "2026-11-16",
+      "slug": "cnvalid",
+      "project": "2026-11-16__cnvalid",
+      "status": "failed",
+      "note": "pytest 失败:\n.........F.............................                                  [100%]\n================================== FAILURES ===================================\n___________________________ test_parse_gender_male ____________________________\n\n    def test_parse_gender_male() -> None:\n>       info = id_parse(\"123456789012345677\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_id_card.py:58: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nvalue",
+      "finished_at": "2026-11-16T09:31:05"
+    },
+    {
+      "date": "2026-11-16",
+      "slug": "cnvalid",
+      "project": "2026-11-16__cnvalid",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-16T09:31:17"
+    },
+    {
+      "date": "2026-11-16",
+      "slug": "cnvalid",
+      "project": "2026-11-16__cnvalid",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-16T09:31:22"
     }
   ]
 }
