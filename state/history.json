@@ -211,6 +211,30 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-16T09:31:22"
+    },
+    {
+      "date": "2026-11-17",
+      "slug": "winname",
+      "project": "2026-11-17__winname",
+      "status": "failed",
+      "note": "pytest 失败:\n.F...........................                                            [100%]\n================================== FAILURES ===================================\n________________________ test_each_illegal_char_family ________________________\n\n    def test_each_illegal_char_family() -> None:\n>       assert sanitize('a\\\\b|c?d*e.txt') == \"a_b_c_d_e.txt\"\nE       AssertionError: assert 'b_c_d_e.txt' == 'a_b_c_d_e.txt'\nE         \nE         - a_b_c_d_e.txt\nE         ? --\nE         + b_c_d_e.tx",
+      "finished_at": "2026-11-17T09:30:54"
+    },
+    {
+      "date": "2026-11-17",
+      "slug": "winname",
+      "project": "2026-11-17__winname",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-17T09:31:04"
+    },
+    {
+      "date": "2026-11-17",
+      "slug": "winname",
+      "project": "2026-11-17__winname",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-17T09:31:09"
     }
   ]
 }

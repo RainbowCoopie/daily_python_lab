@@ -21,6 +21,7 @@ from .topics import (
     yolo_labels,
     xlsafe,
     simdup,
+    winname,
 )
 
 ALL_MODULES = [
@@ -43,6 +44,7 @@ ALL_MODULES = [
     cnnum,
     simdup,
     cnvalid,
+    winname,
 ]
 
 
