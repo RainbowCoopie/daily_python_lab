@@ -235,6 +235,22 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-17T09:31:09"
+    },
+    {
+      "date": "2026-11-18",
+      "slug": "dirdigest",
+      "project": "2026-11-18__dirdigest",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-18T09:31:05"
+    },
+    {
+      "date": "2026-11-18",
+      "slug": "dirdigest",
+      "project": "2026-11-18__dirdigest",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-18T09:31:20"
     }
   ]
 }

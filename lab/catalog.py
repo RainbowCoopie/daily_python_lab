@@ -22,6 +22,7 @@ from .topics import (
     xlsafe,
     simdup,
     winname,
+    dirdigest,
 )
 
 ALL_MODULES = [
@@ -45,6 +46,7 @@ ALL_MODULES = [
     simdup,
     cnvalid,
     winname,
+    dirdigest,
 ]
 
 
