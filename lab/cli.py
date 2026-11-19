@@ -102,14 +102,15 @@ def cmd_run(args: argparse.Namespace) -> int:
     index = scaffold.rebuild_index(today)
     log(f"      {index.relative_to(ROOT)}")
 
+    if args.no_push:
+        log("[5/6] --no-push: 不提交（也不记入运行历史）")
+        log("[6/6] 完成（本地）")
+        return 0
+
+    # 只有真正发布过才记 "ok": 否则一次 dry 会让 21:00 的兜底任务误判今天已完成
     statemod.record_run(
         st, slug=spec.SLUG, project=project.name, status="ok", note=note, today=today
     )
-
-    if args.no_push:
-        log("[5/6] --no-push: 不提交")
-        log("[6/6] 完成（本地）")
-        return 0
 
     log("[5/6] 提交")
     bootstrap = not (ROOT / ".git").exists()

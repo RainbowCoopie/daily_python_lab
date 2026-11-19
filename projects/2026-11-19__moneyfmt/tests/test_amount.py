@@ -147,3 +147,13 @@ def test_format_on_already_broken_float() -> None:
 
 def test_format_large_amount() -> None:
     assert format_amount("9876543210.989") == "9,876,543,210.99"
+
+
+def test_format_cents_takes_cents_not_yuan() -> None:
+    """format_amount 收元, format_cents 收分 —— 名字里写清楚, 免得把分当元传。"""
+    from moneyfmt import format_cents
+
+    assert format_cents(100) == "1.00"
+    assert format_cents(-123456) == "-1,234.56"
+    assert format_cents(-123456, paren_negative=True) == "(1,234.56)"
+    assert format_cents(sum_cents(["0.1"] * 10)) == "1.00"

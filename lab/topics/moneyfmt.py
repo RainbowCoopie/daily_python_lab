@@ -46,6 +46,7 @@ FILES = {
     "moneyfmt/__init__.py": '''from .amount import (
     CENTS,
     format_amount,
+    format_cents,
     from_cents,
     parse_amount,
     round_half_up,
@@ -61,6 +62,7 @@ __all__ = [
     "from_cents",
     "round_half_up",
     "format_amount",
+    "format_cents",
     "split_cents",
     "sum_cents",
 ]
@@ -165,6 +167,11 @@ def format_amount(
     if negative:
         body = f"({body})" if paren_negative else "-" + body
     return currency + body
+
+
+def format_cents(cents: int, **kwargs: object) -> str:
+    """直接按"分"格式化。存在的原因: format_amount 收的是元, 两者极易混淆。"""
+    return format_amount(from_cents(cents), **kwargs)  # type: ignore[arg-type]
 ''',
     "tests/test_amount.py": '''from decimal import Decimal
 
@@ -315,6 +322,16 @@ def test_format_on_already_broken_float() -> None:
 
 def test_format_large_amount() -> None:
     assert format_amount("9876543210.989") == "9,876,543,210.99"
+
+
+def test_format_cents_takes_cents_not_yuan() -> None:
+    """format_amount 收元, format_cents 收分 —— 名字里写清楚, 免得把分当元传。"""
+    from moneyfmt import format_cents
+
+    assert format_cents(100) == "1.00"
+    assert format_cents(-123456) == "-1,234.56"
+    assert format_cents(-123456, paren_negative=True) == "(1,234.56)"
+    assert format_cents(sum_cents(["0.1"] * 10)) == "1.00"
 ''',
 }
 

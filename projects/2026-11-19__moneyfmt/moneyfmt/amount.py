@@ -98,3 +98,8 @@ def format_amount(
     if negative:
         body = f"({body})" if paren_negative else "-" + body
     return currency + body
+
+
+def format_cents(cents: int, **kwargs: object) -> str:
+    """直接按"分"格式化。存在的原因: format_amount 收的是元, 两者极易混淆。"""
+    return format_amount(from_cents(cents), **kwargs)  # type: ignore[arg-type]

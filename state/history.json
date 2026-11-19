@@ -26,14 +26,6 @@
       "project": "2026-11-08__watch_value",
       "status": "ok",
       "note": "",
-      "finished_at": "2026-11-08T17:49:40"
-    },
-    {
-      "date": "2026-11-08",
-      "slug": "watch_value",
-      "project": "2026-11-08__watch_value",
-      "status": "ok",
-      "note": "",
       "finished_at": "2026-11-08T17:49:49"
     },
     {
@@ -42,39 +34,7 @@
       "project": "2026-11-08__sheetref",
       "status": "ok",
       "note": "",
-      "finished_at": "2026-11-08T18:18:33"
-    },
-    {
-      "date": "2026-11-08",
-      "slug": "sheetref",
-      "project": "2026-11-08__sheetref",
-      "status": "ok",
-      "note": "",
       "finished_at": "2026-11-08T18:18:41"
-    },
-    {
-      "date": "2026-11-09",
-      "slug": "widegrid",
-      "project": "2026-11-09__widegrid",
-      "status": "failed",
-      "note": "pytest 失败:\n..F.F..................F..                                               [100%]\n================================== FAILURES ===================================\n_______________ test_every_line_has_same_display_width_with_cjk _______________\n\n    def test_every_line_has_same_display_width_with_cjk() -> None:\n        out = render(\n            [[\"中文\", \"x\"], [\"a\", \"两个字\"]],\n            headers=[\"名称\", \"值\"],\n        )\n>       assert len(widths_of(out)) == 1\nE       AssertionError: assert 3 ==",
-      "finished_at": "2026-11-09T09:30:55"
-    },
-    {
-      "date": "2026-11-09",
-      "slug": "widegrid",
-      "project": "2026-11-09__widegrid",
-      "status": "failed",
-      "note": "pytest 失败:\n...FF.....................                                               [100%]\n================================== FAILURES ===================================\n______________________ test_right_alignment_for_numbers _______________________\n\n    def test_right_alignment_for_numbers() -> None:\n        out = render([[\"1\", \"10\"], [\"100\", \"2\"]], aligns=[\"right\", \"right\"])\n        lines = out.splitlines()\n        assert lines[0] == \"  1 | 10\"\n>       assert lines[1] == \"100 | 2 \"\nE       As",
-      "finished_at": "2026-11-09T09:31:12"
-    },
-    {
-      "date": "2026-11-09",
-      "slug": "widegrid",
-      "project": "2026-11-09__widegrid",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-09T09:31:24"
     },
     {
       "date": "2026-11-09",
@@ -90,23 +50,7 @@
       "project": "2026-11-10__mojibake",
       "status": "ok",
       "note": "",
-      "finished_at": "2026-11-10T09:31:44"
-    },
-    {
-      "date": "2026-11-10",
-      "slug": "mojibake",
-      "project": "2026-11-10__mojibake",
-      "status": "ok",
-      "note": "",
       "finished_at": "2026-11-10T09:31:49"
-    },
-    {
-      "date": "2026-11-11",
-      "slug": "isoweek",
-      "project": "2026-11-11__isoweek",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-11T12:11:19"
     },
     {
       "date": "2026-11-11",
@@ -120,41 +64,9 @@
       "date": "2026-11-12",
       "slug": "xlsafe",
       "project": "2026-11-12__xlsafe",
-      "status": "failed",
-      "note": "pytest 失败:\n..........................F...........F.......                           [100%]\n================================== FAILURES ===================================\n___________________ test_inspect_collects_reasons_in_order ____________________\n\n    def test_inspect_collects_reasons_in_order() -> None:\n>       assert inspect(\"=1234567890123456\") == [\"formula\", \"long_number\"]\nE       AssertionError: assert ['formula'] == ['formula', 'long_number']\nE         \nE         Right contains one mor",
-      "finished_at": "2026-11-12T09:31:21"
-    },
-    {
-      "date": "2026-11-12",
-      "slug": "xlsafe",
-      "project": "2026-11-12__xlsafe",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-12T09:31:38"
-    },
-    {
-      "date": "2026-11-12",
-      "slug": "xlsafe",
-      "project": "2026-11-12__xlsafe",
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-12T09:31:47"
-    },
-    {
-      "date": "2026-11-13",
-      "slug": "cnnum",
-      "project": "2026-11-13__cnnum",
-      "status": "failed",
-      "note": "pytest 失败:\n...............................F.......................................  [100%]\n================================== FAILURES ===================================\n________________________ test_roundtrip[1000000000001] ________________________\n\nvalue = 1000000000001\n\n    @pytest.mark.parametrize(\"value\", [0, 1, 10, 11, 99, 100, 1001, 10010, 99999, 123456789, 10 ** 8 + 7, 10 ** 12 + 1])\n    def test_roundtrip(value: int) -> None:\n>       assert parse_chinese(to_chinese(value)) == value\nE  ",
-      "finished_at": "2026-11-13T09:31:19"
-    },
-    {
-      "date": "2026-11-13",
-      "slug": "cnnum",
-      "project": "2026-11-13__cnnum",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-13T09:31:30"
     },
     {
       "date": "2026-11-13",
@@ -168,22 +80,6 @@
       "date": "2026-11-15",
       "slug": "simdup",
       "project": "2026-11-15__simdup",
-      "status": "failed",
-      "note": "pytest 失败:\n.F...............................                                        [100%]\n================================== FAILURES ===================================\n____________________ test_near_duplicate_clusters_together ____________________\n\n    def test_near_duplicate_clusters_together() -> None:\n        groups = near_duplicates([BASE, OTHER, TWEAK])\n>       assert groups[0] == [0, 2]\nE       assert [0] == [0, 2]\nE         \nE         Right contains one more item: 2\nE         Use -v to",
-      "finished_at": "2026-11-15T09:31:00"
-    },
-    {
-      "date": "2026-11-15",
-      "slug": "simdup",
-      "project": "2026-11-15__simdup",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-15T09:31:27"
-    },
-    {
-      "date": "2026-11-15",
-      "slug": "simdup",
-      "project": "2026-11-15__simdup",
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-15T09:31:33"
@@ -192,41 +88,9 @@
       "date": "2026-11-16",
       "slug": "cnvalid",
       "project": "2026-11-16__cnvalid",
-      "status": "failed",
-      "note": "pytest 失败:\n.........F.............................                                  [100%]\n================================== FAILURES ===================================\n___________________________ test_parse_gender_male ____________________________\n\n    def test_parse_gender_male() -> None:\n>       info = id_parse(\"123456789012345677\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_id_card.py:58: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nvalue",
-      "finished_at": "2026-11-16T09:31:05"
-    },
-    {
-      "date": "2026-11-16",
-      "slug": "cnvalid",
-      "project": "2026-11-16__cnvalid",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-16T09:31:17"
-    },
-    {
-      "date": "2026-11-16",
-      "slug": "cnvalid",
-      "project": "2026-11-16__cnvalid",
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-16T09:31:22"
-    },
-    {
-      "date": "2026-11-17",
-      "slug": "winname",
-      "project": "2026-11-17__winname",
-      "status": "failed",
-      "note": "pytest 失败:\n.F...........................                                            [100%]\n================================== FAILURES ===================================\n________________________ test_each_illegal_char_family ________________________\n\n    def test_each_illegal_char_family() -> None:\n>       assert sanitize('a\\\\b|c?d*e.txt') == \"a_b_c_d_e.txt\"\nE       AssertionError: assert 'b_c_d_e.txt' == 'a_b_c_d_e.txt'\nE         \nE         - a_b_c_d_e.txt\nE         ? --\nE         + b_c_d_e.tx",
-      "finished_at": "2026-11-17T09:30:54"
-    },
-    {
-      "date": "2026-11-17",
-      "slug": "winname",
-      "project": "2026-11-17__winname",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-17T09:31:04"
     },
     {
       "date": "2026-11-17",
@@ -242,23 +106,7 @@
       "project": "2026-11-18__dirdigest",
       "status": "ok",
       "note": "",
-      "finished_at": "2026-11-18T09:31:05"
-    },
-    {
-      "date": "2026-11-18",
-      "slug": "dirdigest",
-      "project": "2026-11-18__dirdigest",
-      "status": "ok",
-      "note": "",
       "finished_at": "2026-11-18T09:31:20"
-    },
-    {
-      "date": "2026-11-19",
-      "slug": "moneyfmt",
-      "project": "2026-11-19__moneyfmt",
-      "status": "ok",
-      "note": "",
-      "finished_at": "2026-11-19T09:31:07"
     },
     {
       "date": "2026-11-19",
