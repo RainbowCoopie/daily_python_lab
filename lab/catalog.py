@@ -1,4 +1,4 @@
-"""主题注册表。加新主题: 在 topics/ 下建模块并在此登记。"""
+﻿"""主题注册表。加新主题: 在 topics/ 下建模块并在此登记。"""
 from __future__ import annotations
 
 from .topics import (
@@ -23,6 +23,7 @@ from .topics import (
     simdup,
     winname,
     dirdigest,
+    moneyfmt,
 )
 
 ALL_MODULES = [
@@ -47,6 +48,7 @@ ALL_MODULES = [
     cnvalid,
     winname,
     dirdigest,
+    moneyfmt,
 ]
 
 
