@@ -24,6 +24,7 @@ from .topics import (
     winname,
     dirdigest,
     moneyfmt,
+    logmine,
 )
 
 ALL_MODULES = [
@@ -49,6 +50,7 @@ ALL_MODULES = [
     winname,
     dirdigest,
     moneyfmt,
+    logmine,
 ]
 
 
