@@ -92,9 +92,16 @@ def cmd_run(args: argparse.Namespace) -> int:
         summary = validate.gate(project, py, token)
     except validate.ValidationError as exc:
         log(f"      闸门未通过, 中止发布:\n{exc}")
-        statemod.record_run(
-            st, slug=spec.SLUG, project=project.name, status="failed", note=str(exc)[:500], today=today
-        )
+        if not args.no_push:
+            # 本地 dry 的失败不该进账本: 账本只记真实运行, 否则历史会被调试过程污染
+            statemod.record_run(
+                st,
+                slug=spec.SLUG,
+                project=project.name,
+                status="failed",
+                note=str(exc)[:500],
+                today=today,
+            )
         return 1
     log(f"      {summary.splitlines()[-1] if summary else 'ok'}")
 

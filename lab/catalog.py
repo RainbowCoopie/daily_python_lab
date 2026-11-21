@@ -25,6 +25,7 @@ from .topics import (
     dirdigest,
     moneyfmt,
     logmine,
+    httpname,
 )
 
 ALL_MODULES = [
@@ -51,6 +52,7 @@ ALL_MODULES = [
     dirdigest,
     moneyfmt,
     logmine,
+    httpname,
 ]
 
 

@@ -120,17 +120,17 @@
       "date": "2026-11-20",
       "slug": "logmine",
       "project": "2026-11-20__logmine",
-      "status": "failed",
-      "note": "pytest 失败:\n.....................F.......                                            [100%]\n================================== FAILURES ===================================\n__________________ test_template_ids_follow_first_seen_order __________________\n\n    def test_template_ids_follow_first_seen_order() -> None:\n        miner = Miner()\n        first = miner.add(\"a 1\")\n        second = miner.add(\"b 2\")\n>       assert (first.id, second.id) == (1, 2)\nE       assert (1, 1) == (1, 2)\nE         \nE     ",
-      "finished_at": "2026-11-20T09:30:48"
-    },
-    {
-      "date": "2026-11-20",
-      "slug": "logmine",
-      "project": "2026-11-20__logmine",
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-20T09:31:04"
+    },
+    {
+      "date": "2026-11-21",
+      "slug": "httpname",
+      "project": "2026-11-21__httpname",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-21T09:31:01"
     }
   ]
 }
