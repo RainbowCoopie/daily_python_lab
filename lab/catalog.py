@@ -26,6 +26,7 @@ from .topics import (
     moneyfmt,
     logmine,
     httpname,
+    unitconv,
 )
 
 ALL_MODULES = [
@@ -53,6 +54,7 @@ ALL_MODULES = [
     moneyfmt,
     logmine,
     httpname,
+    unitconv,
 ]
 
 
