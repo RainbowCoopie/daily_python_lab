@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 import sys
 import traceback
-from datetime import date
+from datetime import date, datetime
 
 from . import catalog, codegen, publish, scaffold, state as statemod, validate
 from .config import ROOT, load_config, read_token
@@ -27,16 +27,44 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
-def _gate_all(token: str | None) -> list[tuple[str, str]]:
-    """对所有已生成项目跑一遍闸门, 返回失败清单。"""
+def _gate_all(token: str | None, *, full: bool = False) -> tuple[list[tuple[str, str]], int]:
+    """过一遍闸门, 返回 (失败清单, 命中缓存数)。
+
+    项目按内容指纹缓存: 上次全绿且内容没变的直接跳过 —— 否则每天要重跑全部项目,
+    耗时随项目数线性增长(17 个项目已需 34 秒)。
+    """
     py = python_exe()
+    cache = statemod.load_gate_cache()
     failures: list[tuple[str, str]] = []
+    skipped = 0
+    checked = 0
     for project in scaffold.list_projects():
+        stamp = validate.fingerprint(project)
+        entry = cache.get(project.name)
+        if not full and entry and entry.get("ok") and entry.get("fingerprint") == stamp:
+            skipped += 1
+            continue
+        checked += 1
         try:
-            validate.gate(project, py, token)
+            summary = validate.gate(project, py, token)
         except validate.ValidationError as exc:
             failures.append((project.name, str(exc)[:400]))
-    return failures
+            cache[project.name] = {
+                "fingerprint": stamp,
+                "ok": False,
+                "summary": str(exc)[:200],
+                "checked_at": datetime.now().isoformat(timespec="seconds"),
+            }
+        else:
+            cache[project.name] = {
+                "fingerprint": stamp,
+                "ok": True,
+                "summary": summary.splitlines()[-1] if summary else "",
+                "checked_at": datetime.now().isoformat(timespec="seconds"),
+            }
+    statemod.save_gate_cache(cache)
+    log(f"      校验 {checked} 个, 命中缓存 {skipped} 个")
+    return failures, skipped
 
 
 def _publish(cfg: dict, token: str, message: str, paths) -> int:
@@ -156,13 +184,13 @@ def cmd_publish(args: argparse.Namespace) -> int:
         return 2
 
     log("[1/3] 闸门: 扫描所有项目")
-    failures = _gate_all(token)
+    failures, skipped = _gate_all(token, full=args.full)
     if failures:
         for name, err in failures:
             log(f"      失败 {name}:\n{err}")
         log("      有项目未通过, 中止发布")
         return 1
-    log(f"      {len(scaffold.list_projects())} 个项目全部通过")
+    log(f"      {len(scaffold.list_projects())} 个项目全部通过（其中 {skipped} 个走缓存）")
 
     log("[2/3] 重建索引")
     index = scaffold.rebuild_index()
@@ -245,6 +273,7 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("publish", help="维护/修复后发布: 全项目过闸门 + 提交所有改动")
     p.add_argument("-m", "--message", required=True, help="commit message")
     p.add_argument("--no-push", action="store_true")
+    p.add_argument("--full", action="store_true", help="忽略闸门缓存, 强制校验全部项目")
     p.set_defaults(func=cmd_publish)
 
     p = sub.add_parser("status", help="查看运行记录")

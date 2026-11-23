@@ -29,6 +29,8 @@
 
 - **模板脚手架**：每个主题在 `lab/topics/<slug>.py` 里有完整的源码与测试，纯标准库，离线可跑。
 - **闸门**：任一项失败即中止，不推送。
+- **增量闸门**：项目按内容指纹缓存，上次全绿且文件没变就跳过。17 个项目时全量约 33 秒，
+  命中缓存后约 0.2 秒；要强制全量重跑用 `--full`。
 - **幂等**：`--if-idle` 保证同一天不会重复提交。
 - **LLM 环节**（默认关）：`--llm` 才会调用本地 ollama 补全挑战模块，会占用显卡。
 
@@ -60,6 +62,7 @@ DAILY.md         每日工作手册
 .\.venv\Scripts\python.exe -m lab dry --slug <slug>          # 只生成+校验，不提交
 .\.venv\Scripts\python.exe -m lab run --slug <slug>          # 生成并发布新主题
 .\.venv\Scripts\python.exe -m lab publish -m "说明"          # 维护/改进后发布任意改动
+.\.venv\Scripts\python.exe -m lab publish -m "说明" --full   # 忽略闸门缓存，强制全量校验
 ```
 
 ## 密钥

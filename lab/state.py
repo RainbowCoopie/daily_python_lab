@@ -13,6 +13,7 @@ from .config import ROOT
 
 STATE_FILE = ROOT / "state" / "history.json"
 LOCAL_FILE = ROOT / "state" / "local.json"
+GATE_CACHE_FILE = ROOT / "state" / "gate_cache.json"
 
 
 def _read(path: Path, default: dict) -> dict:
@@ -30,6 +31,18 @@ def load_state() -> dict:
 
 def load_local() -> dict:
     return _read(LOCAL_FILE, {"commits": []})
+
+
+def load_gate_cache() -> dict:
+    """闸门缓存: 项目名 -> {fingerprint, ok, summary, checked_at}。"""
+    return _read(GATE_CACHE_FILE, {})
+
+
+def save_gate_cache(cache: dict) -> None:
+    GATE_CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    GATE_CACHE_FILE.write_text(
+        json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def save_state(state: dict) -> None:

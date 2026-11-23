@@ -4,10 +4,13 @@
 """
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import subprocess
 from pathlib import Path
+
+CACHE_SKIP_DIRS = {"__pycache__", ".pytest_cache"}
 
 SECRET_PATTERNS = [
     re.compile(r"ghp_[0-9A-Za-z]{30,}"),
@@ -15,6 +18,18 @@ SECRET_PATTERNS = [
     re.compile(r"gho_[0-9A-Za-z]{30,}"),
     re.compile(r"AKIA[0-9A-Z]{16}"),
 ]
+
+
+def fingerprint(project_dir: Path) -> str:
+    """项目内容指纹: 路径 + 大小 + 修改时间。任何文件变动都会改变它。"""
+    digest = hashlib.sha256()
+    for path in sorted(p for p in project_dir.rglob("*") if p.is_file()):
+        rel = path.relative_to(project_dir)
+        if any(part in CACHE_SKIP_DIRS for part in rel.parts):
+            continue
+        stat = path.stat()
+        digest.update(f"{rel.as_posix()}:{stat.st_size}:{stat.st_mtime_ns}\n".encode("utf-8"))
+    return digest.hexdigest()
 
 TEXT_SUFFIXES = {".py", ".md", ".txt", ".json", ".toml", ".cfg", ".ini", ".yml", ".yaml", ".ps1", ".sh"}
 

@@ -7,3 +7,4 @@ logs/
 .env
 config.local.json
 state/local.json
+state/gate_cache.json
