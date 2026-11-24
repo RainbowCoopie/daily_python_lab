@@ -27,6 +27,7 @@ from .topics import (
     logmine,
     httpname,
     unitconv,
+    retrykit,
 )
 
 ALL_MODULES = [
@@ -55,6 +56,7 @@ ALL_MODULES = [
     logmine,
     httpname,
     unitconv,
+    retrykit,
 ]
 
 
