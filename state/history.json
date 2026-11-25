@@ -147,6 +147,14 @@
       "status": "ok",
       "note": "",
       "finished_at": "2026-11-24T09:30:48"
+    },
+    {
+      "date": "2026-11-25",
+      "slug": "structdiff",
+      "project": "2026-11-25__structdiff",
+      "status": "ok",
+      "note": "",
+      "finished_at": "2026-11-25T09:30:47"
     }
   ]
 }

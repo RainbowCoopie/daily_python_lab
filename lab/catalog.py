@@ -28,6 +28,7 @@ from .topics import (
     httpname,
     unitconv,
     retrykit,
+    structdiff,
 )
 
 ALL_MODULES = [
@@ -57,6 +58,7 @@ ALL_MODULES = [
     httpname,
     unitconv,
     retrykit,
+    structdiff,
 ]
 
 
