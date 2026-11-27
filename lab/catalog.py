@@ -30,6 +30,7 @@ from .topics import (
     retrykit,
     structdiff,
     confcheck,
+    textfold,
 )
 
 ALL_MODULES = [
@@ -61,6 +62,7 @@ ALL_MODULES = [
     retrykit,
     structdiff,
     confcheck,
+    textfold,
 ]
 
 
