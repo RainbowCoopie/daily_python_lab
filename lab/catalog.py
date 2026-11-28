@@ -31,6 +31,7 @@ from .topics import (
     structdiff,
     confcheck,
     textfold,
+    tzoff,
 )
 
 ALL_MODULES = [
@@ -63,6 +64,7 @@ ALL_MODULES = [
     structdiff,
     confcheck,
     textfold,
+    tzoff,
 ]
 
 
